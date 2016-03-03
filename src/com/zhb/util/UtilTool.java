@@ -7,7 +7,7 @@ import java.util.Map;
 
 /**
  * Created by ton on 16-3-3.
- * 拆分字符串工具类
+ * 拆分工具类
  */
 public class UtilTool {
 
