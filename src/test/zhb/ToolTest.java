@@ -1,11 +1,5 @@
 package test.zhb;
-<<<<<<< HEAD
 
-/**
- * Created by ton on 16-3-5.
- */
-public class ToolTest {
-=======
 import com.sun.corba.se.impl.encoding.OSFCodeSetRegistry;
 import com.zhb.util.UtilTool;
 import org.junit.Test;
@@ -40,6 +34,4 @@ public class ToolTest {
             System.out.println(_entry.getKey()+","+_entry.getValue());
         }
     }
-
->>>>>>> unitTest
 }
