@@ -12,9 +12,9 @@ public class Record implements Serializable {
     private String id;
     private Product product;
     private int count;
-    private Favorable favorable;
-    private double totalPrice;
-    private double originalPrice;
+    private Favorable favorable;    //最终选择的优惠策略
+    private double totalPrice;  //优惠后的价格
+    private double originalPrice;   //原价格
 
     /*****getter and setter*****/
     public String getId() {
@@ -72,5 +72,8 @@ public class Record implements Serializable {
         this.favorable = favorable;
         this.totalPrice = totalPrice;
         this.originalPrice = originalPrice;
+    }
+
+    public Record() {
     }
 }

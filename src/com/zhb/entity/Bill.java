@@ -1,6 +1,7 @@
 package com.zhb.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,8 +12,9 @@ public class Bill implements Serializable {
     private static final long serialVersionUID = 315690697863231327L;
 
     private String id;
-    private List<Record> records = null;
-    private double totalPrice;
+    private List<Record> records = new ArrayList<Record>();
+    private double totalPrice;  //总价
+    private double originalPrice;   //原价
 
     /*********getter and setter************/
     public String getId() {
@@ -39,10 +41,21 @@ public class Bill implements Serializable {
         this.totalPrice = totalPrice;
     }
 
+    public double getOriginalPrice() {
+        return originalPrice;
+    }
+
+    public void setOriginalPrice(double originalPrice) {
+        this.originalPrice = originalPrice;
+    }
 
     /*********constructor******/
-    public Bill(List<Record> records, double totalPrice) {
+    public Bill(List<Record> records, double totalPrice,double originalPrice) {
         this.records = records;
         this.totalPrice = totalPrice;
+        this.originalPrice = originalPrice;
+    }
+
+    public Bill() {
     }
 }
