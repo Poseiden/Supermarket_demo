@@ -16,6 +16,7 @@ public class Bill implements Serializable {
     private List<Record> records = new ArrayList<Record>();
     private BigDecimal totalPrice;  //总价
     private BigDecimal originalPrice;   //原价
+    private List<Record> favorableRecords = new ArrayList<Record>();    //参与优惠的商品集合
 
     /*********getter and setter************/
     public String getId() {
@@ -50,11 +51,20 @@ public class Bill implements Serializable {
         this.originalPrice = originalPrice;
     }
 
+    public List<Record> getFavorableRecords() {
+        return favorableRecords;
+    }
+
+    public void setFavorableRecords(List<Record> favorableRecords) {
+        this.favorableRecords = favorableRecords;
+    }
+
     /*********constructor******/
-    public Bill(List<Record> records, BigDecimal totalPrice,BigDecimal originalPrice) {
+    public Bill(List<Record> records, BigDecimal totalPrice,BigDecimal originalPrice,List<Record> favorableRecords) {
         this.records = records;
         this.totalPrice = totalPrice;
         this.originalPrice = originalPrice;
+        this.favorableRecords = favorableRecords;
     }
 
     public Bill() {

@@ -85,7 +85,12 @@ public class BusinessOperation {
             Product _product = _entry.getKey();    //价格
             BigDecimal _count = _entry.getValue(); //数量
 
-            records.add(produceRecords(_product,_count,type));
+            Record _record = produceRecords(_product, _count, type);
+            if(_record.getFavorable() != null){ //如果该条消费记录单参加任一优惠活动，那么添加进此账单集合
+                bill.getFavorableRecords().add(_record);
+            }
+
+            records.add(_record);
         }
 
         //计算此账单的总价和原价
@@ -103,7 +108,7 @@ public class BusinessOperation {
     }
 
     /**
-     * 生成每条记录
+     * 生成每条消费记录
      * @param product
      * @param count
      * @return
@@ -112,7 +117,7 @@ public class BusinessOperation {
         List<Favorable> favorableList = product.getFavorable();
         BigDecimal sum = new BigDecimal(0.0);
         Record record = new Record();
-        Favorable favorable = new Favorable();
+        Favorable favorable = null;
 
         if(favorableList.size() < 1){  //不参与优惠活动
             sum = sum.add((product.getPrice().multiply(count)));
