@@ -27,16 +27,16 @@ public class BusinessOperation {
         List<Favorable> favorableList = new ArrayList<Favorable>();
 
         favorableList.add(twoAndOne);   //买二赠一优惠
-        Product cola = new Product("ITEM000001","可口可乐",new BigDecimal(3.00),favorableList);
+        Product cola = new Product("ITEM000001","可口可乐",new BigDecimal(3.00),favorableList,"瓶");
 
         favorableList = new ArrayList<Favorable>();
         favorableList.add(twoAndOne);
         favorableList.add(discount);    //买二赠一优惠 且 打95折
-        Product bird = new Product("ITEM000002","羽毛球",new BigDecimal(1.00),favorableList);
+        Product bird = new Product("ITEM000002","羽毛球",new BigDecimal(1.00),favorableList,"个");
 
         favorableList = new ArrayList<Favorable>();
         favorableList.add(discount);    //打95折优惠
-        Product apple = new Product("ITEM000003","苹果",new BigDecimal(5.50),favorableList);
+        Product apple = new Product("ITEM000003","苹果",new BigDecimal(5.50),favorableList,"斤");
 
         products.add(cola);
         products.add(bird);
