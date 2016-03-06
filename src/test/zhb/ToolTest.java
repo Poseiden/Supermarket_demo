@@ -4,6 +4,7 @@ import com.sun.corba.se.impl.encoding.OSFCodeSetRegistry;
 import com.zhb.util.UtilTool;
 import org.junit.Test;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -29,8 +30,8 @@ public class ToolTest {
      * 测试转换为Map的方法
      */
     public void testReturnMap(){
-        Map<String,Integer> countMap = UtilTool.splitOriginalDataToMap(originalData);
-        for(Map.Entry<String,Integer> _entry:countMap.entrySet()){
+        Map<String,BigDecimal> countMap = UtilTool.splitOriginalDataToMap(originalData);
+        for(Map.Entry<String,BigDecimal> _entry:countMap.entrySet()){
             System.out.println(_entry.getKey()+","+_entry.getValue());
         }
     }
