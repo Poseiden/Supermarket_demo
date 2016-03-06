@@ -16,6 +16,7 @@ public class Product implements Serializable{
     private String name;
     private BigDecimal price;
     private List<Favorable> favorableList = new ArrayList<Favorable>();     //所参与的优惠活动
+    private String unit;    //单位
 
     /*getter and setter*/
     public String getBarCode() {
@@ -50,12 +51,21 @@ public class Product implements Serializable{
         this.favorableList = favorableList;
     }
 
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
     /*Constructor*/
-    public Product(String barCode, String name, BigDecimal price,List<Favorable> favorableList) {
+    public Product(String barCode, String name, BigDecimal price,List<Favorable> favorableList,String unit) {
         this.barCode = barCode;
         this.name = name;
         this.price = price;
         this.favorableList = favorableList;
+        this.unit = unit;
     }
 
     public Product() {
