@@ -1,6 +1,7 @@
 package com.zhb.entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * Created by ton on 16-3-3.
@@ -11,10 +12,10 @@ public class Record implements Serializable {
 
     private String id;
     private Product product;
-    private int count;
+    private BigDecimal count;
     private Favorable favorable;    //最终选择的优惠策略
-    private double totalPrice;  //优惠后的价格
-    private double originalPrice;   //原价格
+    private BigDecimal totalPrice;  //优惠后的价格
+    private BigDecimal originalPrice;   //原价格
 
     /*****getter and setter*****/
     public String getId() {
@@ -33,11 +34,11 @@ public class Record implements Serializable {
         this.product = product;
     }
 
-    public int getCount() {
+    public BigDecimal getCount() {
         return count;
     }
 
-    public void setCount(int count) {
+    public void setCount(BigDecimal count) {
         this.count = count;
     }
 
@@ -49,24 +50,24 @@ public class Record implements Serializable {
         this.favorable = favorable;
     }
 
-    public double getTotalPrice() {
+    public BigDecimal getTotalPrice() {
         return totalPrice;
     }
 
-    public void setTotalPrice(double totalPrice) {
+    public void setTotalPrice(BigDecimal totalPrice) {
         this.totalPrice = totalPrice;
     }
 
-    public double getOriginalPrice() {
+    public BigDecimal getOriginalPrice() {
         return originalPrice;
     }
 
-    public void setOriginalPrice(double originalPrice) {
+    public void setOriginalPrice(BigDecimal originalPrice) {
         this.originalPrice = originalPrice;
     }
 
     /******Constructor*****/
-    public Record(Product product, int count, Favorable favorable, double totalPrice, double originalPrice) {
+    public Record(Product product, BigDecimal count, Favorable favorable, BigDecimal totalPrice, BigDecimal originalPrice) {
         this.product = product;
         this.count = count;
         this.favorable = favorable;

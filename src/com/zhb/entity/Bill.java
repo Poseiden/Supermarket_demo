@@ -1,6 +1,7 @@
 package com.zhb.entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,8 +14,8 @@ public class Bill implements Serializable {
 
     private String id;
     private List<Record> records = new ArrayList<Record>();
-    private double totalPrice;  //总价
-    private double originalPrice;   //原价
+    private BigDecimal totalPrice;  //总价
+    private BigDecimal originalPrice;   //原价
 
     /*********getter and setter************/
     public String getId() {
@@ -33,24 +34,24 @@ public class Bill implements Serializable {
         this.records = records;
     }
 
-    public double getTotalPrice() {
+    public BigDecimal getTotalPrice() {
         return totalPrice;
     }
 
-    public void setTotalPrice(double totalPrice) {
+    public void setTotalPrice(BigDecimal totalPrice) {
         this.totalPrice = totalPrice;
     }
 
-    public double getOriginalPrice() {
+    public BigDecimal getOriginalPrice() {
         return originalPrice;
     }
 
-    public void setOriginalPrice(double originalPrice) {
+    public void setOriginalPrice(BigDecimal originalPrice) {
         this.originalPrice = originalPrice;
     }
 
     /*********constructor******/
-    public Bill(List<Record> records, double totalPrice,double originalPrice) {
+    public Bill(List<Record> records, BigDecimal totalPrice,BigDecimal originalPrice) {
         this.records = records;
         this.totalPrice = totalPrice;
         this.originalPrice = originalPrice;

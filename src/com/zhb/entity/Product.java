@@ -1,6 +1,7 @@
 package com.zhb.entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +14,7 @@ public class Product implements Serializable{
 
     private String barCode;
     private String name;
-    private double price;
+    private BigDecimal price;
     private List<Favorable> favorableList = new ArrayList<Favorable>();     //所参与的优惠活动
 
     /*getter and setter*/
@@ -33,11 +34,11 @@ public class Product implements Serializable{
         this.name = name;
     }
 
-    public double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
@@ -50,7 +51,7 @@ public class Product implements Serializable{
     }
 
     /*Constructor*/
-    public Product(String barCode, String name, double price,List<Favorable> favorableList) {
+    public Product(String barCode, String name, BigDecimal price,List<Favorable> favorableList) {
         this.barCode = barCode;
         this.name = name;
         this.price = price;

@@ -5,6 +5,7 @@ import com.zhb.entity.Favorable;
 import com.zhb.entity.Product;
 import com.zhb.entity.Record;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -12,15 +13,12 @@ import java.util.*;
  * 业务操作类
  */
 public class BusinessOperation {
-    private List<Product> products = null;  //全部商品
-//    private List<Favorable> favorableList = null;  //  参与优惠的商品
-    private List<String> errorProducts = null; //错误条形码信息，包括未找到对应条形码的商品等
+    public List<Product> products = null;  //全部商品
+    public List<String> errorProducts = null; //错误条形码信息，包括未找到对应条形码的商品等
 
     {
         //加载全部商品
         products = new ArrayList<Product>();
-        //加载全部优惠信息
-//        favorableList = new ArrayList<Favorable>();
         Favorable twoAndOne = new Favorable("0",0); //买二赠一
         Favorable discount = new Favorable("1",1);  //打95折
         //初始化错误条形码集合
@@ -29,32 +27,20 @@ public class BusinessOperation {
         List<Favorable> favorableList = new ArrayList<Favorable>();
 
         favorableList.add(twoAndOne);   //买二赠一优惠
-        Product cola = new Product("ITEM000001","可口可乐",3.00,favorableList);
+        Product cola = new Product("ITEM000001","可口可乐",new BigDecimal(3.00),favorableList);
 
         favorableList = new ArrayList<Favorable>();
         favorableList.add(twoAndOne);
         favorableList.add(discount);    //买二赠一优惠 且 打95折
-        Product bird = new Product("ITEM000002","羽毛球",1.00,favorableList);
+        Product bird = new Product("ITEM000002","羽毛球",new BigDecimal(1.00),favorableList);
 
         favorableList = new ArrayList<Favorable>();
         favorableList.add(discount);    //打95折优惠
-        Product apple = new Product("ITEM000003","苹果",5.50,favorableList);
+        Product apple = new Product("ITEM000003","苹果",new BigDecimal(5.50),favorableList);
 
         products.add(cola);
         products.add(bird);
         products.add(apple);
-        
-        
-//        List<Product> twoAndOne = new ArrayList<Product>(); //买二赠一的商品集合
-//        twoAndOne.add(cola);
-//        Favorable favorable1 = new Favorable("0",twoAndOne,0);  //优惠1
-//
-//        List<Product> discount = new ArrayList<Product>();  //  打折商品集合
-//        discount.add(apple);
-//        Favorable favorable2 = new Favorable("1",discount,1);   //优惠2
-//
-//        favorableList.add(favorable1);
-//        favorableList.add(favorable2);
         
     }
 
@@ -63,10 +49,10 @@ public class BusinessOperation {
      * @param stringCountMap    条形码-个数
      * @return 商品-个数 Map
      */
-    public Map<Product,Integer> toProductCountMap(Map<String,Integer> stringCountMap){
-        Map<Product,Integer> productCountMap = new HashMap<Product,Integer>();
+    public Map<Product,BigDecimal> toProductCountMap(Map<String,BigDecimal> stringCountMap){
+        Map<Product,BigDecimal> productCountMap = new HashMap<Product,BigDecimal>();
 
-        for(Map.Entry<String,Integer> _entry:stringCountMap.entrySet()){
+        for(Map.Entry<String,BigDecimal> _entry:stringCountMap.entrySet()){
             for(int i = 0;i<products.size();i++){
                 if(_entry.getKey().equals(products.get(i).getBarCode())){  //如果找到，那么放入map，且接着查找下一个商品
                     productCountMap.put(products.get(i),_entry.getValue());
@@ -86,33 +72,26 @@ public class BusinessOperation {
      * @param productCountMap  商品-个数 map
      * @param type 当两种优惠冲突时选择的优惠类型 0：买二赠一  1：打95折
      */
-    public Bill produceBills(Map<Product,Integer> productCountMap,Integer type){
+    public Bill produceBills(Map<Product,BigDecimal> productCountMap,Integer type){
         Bill bill = new Bill();
         List<Record> records = new ArrayList<Record>();
-        Double totalPriceForBill = 0.00;    //账单总价
-        Double originalPriceForBill = 0.00; //账单原价
+        BigDecimal totalPriceForBill = new BigDecimal(0.00);    //账单总价
+        BigDecimal originalPriceForBill = new BigDecimal(0.00); //账单原价
 
         //遍历购买的 商品-次数 集合
         Favorable _favorable = null; //商品采用的优惠
-        for(Map.Entry<Product,Integer> _entry: productCountMap.entrySet()){
+        for(Map.Entry<Product,BigDecimal> _entry: productCountMap.entrySet()){
             List<Favorable> _favorableList = _entry.getKey().getFavorable();
             Product _product = _entry.getKey();    //价格
-            Integer _count = _entry.getValue(); //数量
+            BigDecimal _count = _entry.getValue(); //数量
 
-            if(_favorableList.size() < 1){  //不参与优惠活动
-                _favorable = null;
-            }else if (_favorableList.size() == 1){ //只参与一项优惠活动
-                _favorable = _favorableList.get(0);
-            }else if(_favorableList.size() > 1){    //两项活动都参与
-                _favorable = _favorableList.get(type);
-            }
-            records.add(produceRecords(_favorable,_product,_count));
+            records.add(produceRecords(_product,_count,type));
         }
 
         //计算此账单的总价和原价
         for(Record _record:records){
-            totalPriceForBill += _record.getTotalPrice();
-            originalPriceForBill += _record.getOriginalPrice();
+            totalPriceForBill = totalPriceForBill.add(_record.getTotalPrice());
+            originalPriceForBill = originalPriceForBill.add(_record.getOriginalPrice());
         }
 
         bill.setId(new StringBuilder(new Random().nextInt(10000)+1+"").append(System.currentTimeMillis()+"").toString());
@@ -123,19 +102,33 @@ public class BusinessOperation {
         return bill;
     }
 
-    private Record produceRecords(Favorable favorable,Product product,Integer count){
-        Double sum = 0.0;
+    /**
+     * 生成每条记录
+     * @param product
+     * @param count
+     * @return
+     */
+    private Record produceRecords(Product product,BigDecimal count,Integer type){
+        List<Favorable> favorableList = product.getFavorable();
+        BigDecimal sum = new BigDecimal(0.0);
         Record record = new Record();
+        Favorable favorable = new Favorable();
 
-        //计算价钱
-        if(favorable != null) {
-            if (favorable.getType() == 0) {   //买二赠一
-                sum += (((count / 3) * 2 * product.getPrice()) + (count % 3) * product.getPrice());
-            } else {  //打95折
-                sum += (count * product.getPrice() * 0.95);
+        if(favorableList.size() < 1){  //不参与优惠活动
+            sum = sum.add((product.getPrice().multiply(count)));
+        }else{ //参与优惠活动
+            if(favorableList.size() == 1){
+                favorable = favorableList.get(0);
+            }else{
+                favorable = favorableList.get(type);
             }
-        }else{
-            sum += (product.getPrice() * count);
+
+            if (favorable.getType() == 0) {   //买二赠一
+                BigDecimal _sum =(((count.divideToIntegralValue(new BigDecimal(3))).multiply(new BigDecimal(2)).multiply(product.getPrice())).add((count.divideAndRemainder(new BigDecimal("3")))[1].multiply(product.getPrice())));
+                sum = sum.add((((count.divideToIntegralValue(new BigDecimal(3))).multiply(new BigDecimal(2)).multiply(product.getPrice())).add((count.divideAndRemainder(new BigDecimal("3")))[1].multiply(product.getPrice()))));
+            } else {  //打95折
+                sum = sum.add((count.multiply(product.getPrice()).multiply(new BigDecimal("0.95"))));   //不可用double作为BigDecimal的构造源
+            }
         }
 
         record.setId(new StringBuilder(new Random().nextInt(10000)+1+"").append(System.currentTimeMillis()+"").toString());
@@ -143,7 +136,7 @@ public class BusinessOperation {
         record.setCount(count);
         record.setFavorable(favorable);
         record.setTotalPrice(sum);  //总价
-        record.setOriginalPrice(product.getPrice() * count);   //原价
+        record.setOriginalPrice(product.getPrice().multiply(count));   //原价
 
         return record;
     }

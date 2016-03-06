@@ -1,5 +1,6 @@
 package com.zhb.util;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,16 +34,16 @@ public class UtilTool {
      * @param originalData
      * @return key为商品条形码，value为商品数量
      */
-    public static Map<String,Integer> splitOriginalDataToMap(String originalData){
+    public static Map<String,BigDecimal> splitOriginalDataToMap(String originalData){
         String[] productData = originalData.substring(1,originalData.length()-1).split(",");
-        Map<String,Integer> countMap = new HashMap<String,Integer>();
+        Map<String,BigDecimal> countMap = new HashMap<String,BigDecimal>();
         for(String str:productData){
             String[] data = str.substring(1, str.length()-1).split("-");    //若有-，那么第一个元素是条形码，第二个元素是数量
 
             if(countMap.containsKey(data[0])){
-                countMap.put(data[0],countMap.get(data[0])+(data.length==1?1:Integer.parseInt(data[1])));
+                countMap.put(data[0],countMap.get(data[0]).add((data.length==1?new BigDecimal(1):new BigDecimal(data[1]))));
             }else{
-                countMap.put(data[0],data.length == 1 ?1:Integer.parseInt(data[1]));
+                countMap.put(data[0], data.length == 1 ? new BigDecimal(1) : new BigDecimal(data[1]));
             }
         }
 
