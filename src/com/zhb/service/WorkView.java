@@ -32,7 +32,7 @@ public class WorkView {
         }
 
         System.out.println("--------------------------");
-        System.out.println(String.format("总计：%s(元)"));
+        System.out.println(String.format("总计：%s(元)",bill.getTotalPrice()));
         System.out.println(bill.getFavorableRecords() == null ? null : (String.format("节省：%s(元)",bill.getOriginalPrice().subtract(bill.getTotalPrice()))));
     }
 }
