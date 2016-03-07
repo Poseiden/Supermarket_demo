@@ -27,16 +27,16 @@ public class BusinessOperation {
         List<Favorable> favorableList = new ArrayList<Favorable>();
 
         favorableList.add(twoAndOne);   //买二赠一优惠
-        Product cola = new Product("ITEM000001","可口可乐",new BigDecimal(3.00),favorableList,"瓶");
+        Product cola = new Product("ITEM000001","可口可乐",new BigDecimal("3"),favorableList,"瓶");
 
         favorableList = new ArrayList<Favorable>();
         favorableList.add(twoAndOne);
         favorableList.add(discount);    //买二赠一优惠 且 打95折
-        Product bird = new Product("ITEM000002","羽毛球",new BigDecimal(1.00),favorableList,"个");
+        Product bird = new Product("ITEM000002","羽毛球",new BigDecimal("1"),favorableList,"个");
 
         favorableList = new ArrayList<Favorable>();
         favorableList.add(discount);    //打95折优惠
-        Product apple = new Product("ITEM000003","苹果",new BigDecimal(5.50),favorableList,"斤");
+        Product apple = new Product("ITEM000003","苹果",new BigDecimal("5.50"),favorableList,"斤");
 
         products.add(cola);
         products.add(bird);
@@ -75,8 +75,8 @@ public class BusinessOperation {
     public Bill produceBills(Map<Product,BigDecimal> productCountMap,Integer type){
         Bill bill = new Bill();
         List<Record> records = new ArrayList<Record>();
-        BigDecimal totalPriceForBill = new BigDecimal(0.00);    //账单总价
-        BigDecimal originalPriceForBill = new BigDecimal(0.00); //账单原价
+        BigDecimal totalPriceForBill = new BigDecimal("0");    //账单总价
+        BigDecimal originalPriceForBill = new BigDecimal("0"); //账单原价
 
         //遍历购买的 商品-次数 集合
         Favorable _favorable = null; //商品采用的优惠
@@ -115,7 +115,7 @@ public class BusinessOperation {
      */
     private Record produceRecords(Product product,BigDecimal count,Integer type){
         List<Favorable> favorableList = product.getFavorable();
-        BigDecimal sum = new BigDecimal(0.0);
+        BigDecimal sum = new BigDecimal("0");
         Record record = new Record();
         Favorable favorable = null;
 
@@ -129,8 +129,7 @@ public class BusinessOperation {
             }
 
             if (favorable.getType() == 0) {   //买二赠一
-                BigDecimal _sum =(((count.divideToIntegralValue(new BigDecimal(3))).multiply(new BigDecimal(2)).multiply(product.getPrice())).add((count.divideAndRemainder(new BigDecimal("3")))[1].multiply(product.getPrice())));
-                sum = sum.add((((count.divideToIntegralValue(new BigDecimal(3))).multiply(new BigDecimal(2)).multiply(product.getPrice())).add((count.divideAndRemainder(new BigDecimal("3")))[1].multiply(product.getPrice()))));
+                sum = sum.add((((count.divideToIntegralValue(new BigDecimal("3"))).multiply(new BigDecimal("2")).multiply(product.getPrice())).add((count.divideAndRemainder(new BigDecimal("3")))[1].multiply(product.getPrice()))));
             } else {  //打95折
                 sum = sum.add((count.multiply(product.getPrice()).multiply(new BigDecimal("0.95"))));   //不可用double作为BigDecimal的构造源
             }
