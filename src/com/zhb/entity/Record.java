@@ -86,10 +86,11 @@ public class Record implements Serializable {
      */
     public String toString() {
         String content = "";
-        if(this.getFavorable().getType() == 0) {
-            content = String.format("名称：%s,数量：%s(%s),单价：%s(元)，小计：%s(元)", this.getProduct().getName(), this.getCount(),this.getProduct().getUnit() ,this.getProduct().getPrice(),this.getTotalPrice());
+
+        if(this.getFavorable() == null || this.getFavorable().getType() == 0) {
+            content = String.format("名称：%s,数量：%s%s,单价：%s(元)，小计：%s(元)", this.getProduct().getName(), this.getCount(),this.getProduct().getUnit() ,this.getProduct().getPrice().setScale(2),this.getTotalPrice().setScale(2));
         }else if(this.getFavorable().getType() == 1){
-            content = String.format("名称：%s,数量：%s(%s),单价：%s(元),小计：%s(元),节省：%s(元)", this.getProduct().getName(), this.getCount(), this.getProduct().getUnit(),this.getProduct().getPrice(),this.getTotalPrice(),this.getOriginalPrice().subtract(this.getTotalPrice()));
+            content = String.format("名称：%s,数量：%s%s,单价：%s(元),小计：%s(元),节省：%s(元)", this.getProduct().getName(), this.getCount(), this.getProduct().getUnit(),this.getProduct().getPrice().setScale(2),this.getTotalPrice().setScale(2),this.getOriginalPrice().subtract(this.getTotalPrice()).setScale(2));
         }
         return content;
     }

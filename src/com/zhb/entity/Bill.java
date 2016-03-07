@@ -16,7 +16,7 @@ public class Bill implements Serializable {
     private List<Record> records = new ArrayList<Record>();
     private BigDecimal totalPrice;  //总价
     private BigDecimal originalPrice;   //原价
-    private List<Record> favorableRecords = new ArrayList<Record>();    //参与优惠的商品集合
+    private List<Record> favorableRecords = new ArrayList<Record>();    //参与优惠的消费记录集合
 
     /*********getter and setter************/
     public String getId() {
